@@ -157,4 +157,31 @@ dim(recc_matrix)
 
 **Ваша очередь:**
 
-Постройте рекомендательную систему на основе схожести между пользователями, а не между фильмами (метод UBCF вместо IBCF).
+```{r}
+recommender_models <- recommenderRegistry$get_entries(dataType =
+"realRatingMatrix")
+recommender_models$UBCF_realRatingMatrix$parameters
+
+recc_model <- Recommender(data = recc_data_train, method = "UBCF",
+parameter = list)
+recc_model
+
+model_details <- getModel(recc_model)
+model_details$description
+model_details$sim[1:5, 1:5]
+
+recc_predicted <- predict(object = recc_model, newdata = recc_data_test, n = 6)
+recc_predicted
+
+str(recc_predicted)
+
+recc_user_1 <- recc_predicted@items[[1]]
+recc_user_1
+movies_user_1 <- recc_predicted@itemLabels[recc_user_1]
+movies_user_1
+
+recc_matrix <- sapply(recc_predicted@items, function(x){
+colnames(ratings_movies)[x]
+})
+dim(recc_matrix)
+```
